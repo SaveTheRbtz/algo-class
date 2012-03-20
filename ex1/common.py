@@ -20,10 +20,11 @@ def debug(func):
     if not __debug__:
         return func
     from functools import wraps
+    import sys
     @wraps(func)
     def wrapper(*args, **kwargs):
-        print "== {0} INPUT ==: ARGS: {1}, KWARGS: {2}".format(func.__name__, args, kwargs)
+        print >>sys.stderr, "== {0} INPUT ==: ARGS: {1}, KWARGS: {2}".format(func.__name__, args, kwargs)
         ret = func(*args, **kwargs)
-        print "== {0} OUTPUT ==: {1}".format(func.__name__, ret)
+        print >>sys.stderr, "== {0} OUTPUT ==: {1}".format(func.__name__, ret)
         return ret
     return wrapper
