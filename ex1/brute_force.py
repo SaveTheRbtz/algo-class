@@ -1,23 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from common import setup_signals, parse_file
 
 PROGRESS_BAR = {}
-
-def setup_signals(progress_bar):
-    import signal
-    def progress(*args):
-        print progress_bar
-    for sig in (signal.SIGINFO, signal.SIGQUIT):
-        signal.signal(sig, progress)
-    print "Signal handlers installed:"
-    print "Press Ctrl+T(BSD) / Ctrl+4(Linux) for progress"
-
-def parse_file(filename):
-    """Load list of integers from file and yield them"""
-    with open(filename) as f:
-        for line in f:
-            for num in map(int, line.split()):
-                yield num
 
 def brute_force(data):
     """
