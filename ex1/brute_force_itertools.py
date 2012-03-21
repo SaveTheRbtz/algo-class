@@ -14,7 +14,7 @@ def brute_force(data):
     >>> brute_force([6,5,4,3,2,1])
     15
     """
-    return sum(itertools.ifilter(None, (a>b for a,b in itertools.combinations(data, 2))))
+    return sum(1 for a,b in itertools.combinations(data, 2) if a > b)
 
 if __name__ == '__main__':
     from optparse import OptionParser
