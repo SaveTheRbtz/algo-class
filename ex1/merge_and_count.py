@@ -9,6 +9,8 @@ def merge_and_count(left, right):
     Merge two sorted lists and return number of inversions
     Not very optimized but pretty pythonish
 
+    TODO: Use bisect
+
     >>> merge_and_count([6], [5])
     (1, [5, 6])
     >>> merge_and_count([1, 2, 3], [4, 5, 6])
