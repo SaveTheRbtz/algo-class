@@ -3,22 +3,6 @@
 
 from common import parse_file, debug
 
-def split_in_half(lst):
-    """
-    Splits list into two halves
-
-    >>> split_in_half([1,2,3,4,5])
-    ([1, 2], [3, 4, 5])
-    >>> split_in_half([1,2])
-    ([1], [2])
-    >>> split_in_half([1,2,3])
-    ([1], [2, 3])
-    """
-    length = len(lst)
-    if length < 2:
-        return (lst, [])
-    return lst[:length / 2], lst[length / 2:]
-
 @debug
 def merge_and_count(left, right):
     """
@@ -58,8 +42,7 @@ def sort_and_count(lst):
     >>> sort_and_count([6, 5, 4, 3, 2, 1])
     (15, [1, 2, 3, 4, 5, 6])
     """
-    lst = list(lst)
-    left, right = split_in_half(lst)
+    left, right = lst[:len(lst) / 2], lst[len(lst) / 2:]
     # Trivial case
     if len(lst) <= 2:
         if not right or left < right:
@@ -78,5 +61,5 @@ if __name__ == '__main__':
     parser.add_option("-f", type="string", dest="file", default="IntegerArray.txt")
     (options, args) = parser.parse_args()
 
-    inversions, _ = sort_and_count(parse_file(options.file))
+    inversions, _ = sort_and_count(list(parse_file(options.file)))
     print inversions
