@@ -22,8 +22,8 @@ def median_of_three(lst):
     """
     Return index of median element of first, middle and last
 
-    >>> median_of_three([1,2,3,4,5,6,7])
-    3
+    >>> median_of_three([0, 2, 3, 100, 5, 7, 20])
+    6
     >>> median_of_three([3,2,1])
     1
     >>> median_of_three([3,2,1,0,17])
