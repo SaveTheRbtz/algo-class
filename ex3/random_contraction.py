@@ -41,17 +41,11 @@ def random_contraction(G, random_seed=None):
             log.debug("Cirrcular link found on node: %(node1)s", dict(node1=node1))
             continue
         log.debug("Node's %(node1)s neighbors: %(neighbors)s", dict(node1=node1, neighbors=G.neighbors(node1)))
-        # XXX: Ugly!
-        for x,y in G.edges():
-            if x == node1 and y != node2:
-                link_to = y
-            elif y == node1 and x != node2:
-                link_to = x
-            else:
-                continue
-            G.add_edge(link_to, node2)
-            G.remove_edge(link_to, node1)
-            log.debug("New edge: %(link_to)s <-> %(node2)s", dict(link_to=link_to, node2=node2))
+        for neighbor in G.neighbors(node1):
+            while neighbor in set(G.neighbors(node1)) - set([node2]):
+                G.add_edge(neighbor, node2)
+                G.remove_edge(neighbor, node1)
+                log.debug("New edge: %(neighbor)s <-> %(node2)s", dict(neighbor=neighbor, node2=node2))
         log.debug("Removing node: %(node1)s", dict(node1=node1))
         G.remove_node(node1)
         log.debug("Nodes: %(nodes)s", dict(nodes=G.nodes()))
