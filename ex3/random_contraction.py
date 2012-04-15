@@ -54,10 +54,7 @@ def random_contraction(G, random_seed=None):
     log.info("Number of edges: %(edges)s", dict(edges=G.number_of_edges()))
     return G.number_of_edges()
 
-def main(raw_pairs, iterations, random_seed):
-    G = nx.MultiGraph()
-    G.add_edges_from(raw_pairs)
-
+def main(G, iterations, random_seed):
     log.warning("Edges: %(edges)s", dict(edges=G.edges()))
     log.warning("Number of Edges: %(total)d", dict(total=G.number_of_edges()))
     log.warning("Nodes: %(nodes)s", dict(nodes=G.nodes()))
@@ -80,18 +77,10 @@ if __name__ == '__main__':
     parser.add_option("-s", type="int", dest="random_seed")
     (options, args) = parser.parse_args()
 
-    raw_pairs = []
-    with open(options.file) as lines:
-        for line in lines:
-            try:
-                node, connections = np.split(line.split(), [1])
-                node, = node
-                for x,y in izip_longest([node], connections, fillvalue=node):
-                    if (y, x) in raw_pairs or (x, y) in raw_pairs:
-                        continue
-                    raw_pairs.append((x, y))
-            except Exception:
-                log.info("Can't parse line: %(line)s", dict(line=line), exc_info=True)
+    try:
+        G = nx.MultiGraph()
+        G.add_edges_from(nx.read_adjlist(options.file, nodetype=int).edges())
+    except Exception:
+        log.error("Can't parse file: %(file)s", dict(file=options.file), exc_info=True)
 
-    log.debug("Raw Pairs: %(raw_pairs)s", dict(raw_pairs=pformat(raw_pairs)))
-    log.warning("Mincut is: %(mincut)s", dict(mincut=main(raw_pairs, options.iterations, options.random_seed)))
+    log.warning("Mincut is: %(mincut)s", dict(mincut=main(G, options.iterations, options.random_seed)))
